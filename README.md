@@ -24,3 +24,9 @@ RewriteRule . index.php [L]
 -rotas com parametros requeridos e opcionais
 -nomeando rotas
 -agrupando rotas
+
+##Aula 535 - Tipos de requisição
+-GET (selects on database)
+-POST (inserts on database)
+-PUT (updates on database)
+-DELETE (deletes on database)
