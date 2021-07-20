@@ -4,59 +4,47 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require 'vendor/autoload.php';
 
-$app = new \Slim\App;
+$app = new \Slim\App([
+  'settings' => [
+    'displayErrorDetails' => true
+  ]
+]);
 
-$app->get('/usuario[/{id}]', function (Request $request, Response $response, array $args) {
-    $id = $args['id'];
-    $json = "Id: $id";
-    $response->getBody()->write($json);
+/* CONTAINER DEPENDENCE INJECTION */
+class Servico{}
+/* container pimple */
+$container = $app->getContainer();
+$container['servico'] = function()
+{
+  return new Servico;
+};
 
-    return $response;
+$app->get('/servico', function (Request $request, Response $response, array $args) {
+  
+  $servico = var_dump($this->get('servico'));
+  $response->getBody()->write($servico);
+  
+  return $response;
 });
 
-$app->post('/usuario/adiciona', function (Request $request, Response $response, array $args) {
-    
-    //recupera $_POST
-    $post = $request->getParsedBody();
-    $nome = $post['nome'];
-    $email = $post['email'];
 
-    /* Insert no banco de dados */
 
-    /* responde ao usuário */
-    $response->getBody()->write($nome . '-' . $email);
+/* CONTROLLERS COMO SERVICO */
 
-    return $response;
-});
+// Metodo 1
+$container['View'] = function()
+{
+  return new MyApp\View;
+};
 
-$app->put('/usuario/atualiza', function (Request $request, Response $response, array $args) {
-    
-    //recupera $_POST
-    $post = $request->getParsedBody();
-    $id = $post['id'];
-    $nome = $post['nome'];
-    $email = $post['email'];
+$app->get('/servico2', '\MyApp\controllers\Home:index');
 
-    /* UPDATE no banco de dados */
+//Metodo 2
+$container['Home2'] = function()
+{
+  return new MyApp\controllers\Home2(new MyApp\View);
+};
 
-    /* responde ao usuário */
-    $response->getBody()->write('Sucesso' . $id);
-
-    return $response;
-});
-
-$app->delete('/usuario/remove/{id}', function (Request $request, Response $response) {
-    
-    //recupera dados
-    $id = $request->getAttribute('id');
-
-    /* DELETE no banco de dados */
-
-    /* responde ao usuário */
-    $response->getBody()->write('Removido' . $id);
-
-    return $response;
-});
-
+$app->get('/servico3', 'Home2:index');
 
 $app->run();

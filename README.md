@@ -30,3 +30,11 @@ RewriteRule . index.php [L]
 -POST (inserts on database)
 -PUT (updates on database)
 -DELETE (deletes on database)
+
+##Aula 536 - Serviços e dependências
+
+Nesta aula configuramos o autoload psr4 no compose.json e utilizamos o comando a seguir para recarreagar os arquivos autoload
+
+```
+php composer.phar dumpautoload
+```
