@@ -38,3 +38,12 @@ Nesta aula configuramos o autoload psr4 no compose.json e utilizamos o comando a
 ```
 php composer.phar dumpautoload
 ```
+
+##Aula 537 - Middlewares, tipos de respostas e Illuminate Database
+
+Nesta aula instalamos o Illuminate
+
+```
+composer require illuminate/database
+composer require "illuminate/events"
+```
